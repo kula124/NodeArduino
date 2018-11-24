@@ -1,0 +1,13 @@
+{
+  "name": "nodeboz",
+  "version": "1.0.0",
+  "description": "node bot",
+  "main": "index.js",
+  "author": "Kula",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "iohook": "^0.2.4",
+    "johnny-five": "^1.0.0"
+  }
+}
