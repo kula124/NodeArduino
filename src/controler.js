@@ -35,7 +35,7 @@ function act (type, data) {
         motor.stop()
         break; 
         case servoAction.LEFT:
-        servo.to(servo.startAt + data)
+        servo.to(parseInt(servo.startAt) + parseInt(data)) //Gotta love JS amIrite
         break;
         case servoAction.RIGHT:
         servo.to(servo.startAt - data)
