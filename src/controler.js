@@ -2,22 +2,25 @@ const five = require('johnny-five')
 const motorAction = require('./constants/motor')
 const servoAction = require('./constants/servo')
 const dcMotor = require('./motor')
-const controler;
 
 const motor = new dcMotor({
     pins: {
-        pwm: process.env.DCMOTOR_PIN_PWM || 9,
-        dir: process.env.DCMOTOR_PIN_D1 || 7,
-        cdir: process.env.DCMOTOR_PIN_D2 || 8,
+        pwm: process.env.DCMOTOR_PIN_PWM,
+        dir: process.env.DCMOTOR_PIN_D1,
+        cdir: process.env.DCMOTOR_PIN_D2,
     }
 })
 
 const servo = new five.Servo({
     pin: process.env.SERVO_PIN,
-    startAt: 90
+    startAt: 92,
+    range: [0, 180],
+    center: true
 })
 
 function act (type, data) {
+    console.log("In controler: ")
+    console.log(type, data)
     switch (type) {
         case motorAction.FORWARD:
         motor.forward(data)
@@ -32,10 +35,16 @@ function act (type, data) {
         motor.stop()
         break; 
         case servoAction.LEFT:
-        servo.to(servo.startAt - data)
-        break;
-        case servoAction.RIGHT:
         servo.to(servo.startAt + data)
         break;
+        case servoAction.RIGHT:
+        servo.to(servo.startAt - data)
+        break;
+        case servoAction.RESET:
+        servo.to(servo.startAt)
     }
+}
+
+module.exports = {
+    act,
 }
