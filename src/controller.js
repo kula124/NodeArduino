@@ -1,13 +1,14 @@
 const five = require('johnny-five')
 const motorAction = require('./constants/motor')
 const servoAction = require('./constants/servo')
-const DcMotor = require('./motor')
+const DcMotor = require('./customMotor')
 
 const motor = new DcMotor({
+  // config: five.Motor.SHIELD_CONFIGS.POLOLU_DRV8835_SHIELD,
   pins: {
     pwm: process.env.DCMOTOR_PIN_PWM,
-    dir: process.env.DCMOTOR_PIN_D1,
-    cdir: process.env.DCMOTOR_PIN_D2
+    dir: process.env.DCMOTOR_PIN_D2,
+    cdir: process.env.DCMOTOR_PIN_D1
   }
 })
 
@@ -34,10 +35,10 @@ function act (type, data) {
     case motorAction.STOP:
       motor.stop()
       break
-    case servoAction.LEFT:
+    case servoAction.RIGHT:
       servo.to(parseInt(servo.startAt) + parseInt(data)) // Gotta love JS amIrite
       break
-    case servoAction.RIGHT:
+    case servoAction.LEFT:
       servo.to(servo.startAt - data)
       break
     case servoAction.RESET:

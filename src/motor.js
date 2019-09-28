@@ -5,10 +5,12 @@ class dcMotor {
     const { pins, invertPWM } = settings
     this.motorPins = pins
     this.invertPWM = invertPWM
-    this._motor = new five.Motor({
-      pins,
-      invertPWM
-    })
+    this._motor = settings.config
+      ? new five.Motor(settings.config.M1)
+      : new five.Motor({
+        pins,
+        invertPWM
+      })
     this.switchSide = this.switchSide.bind(this)
     this.motor = this.motor.bind(this)
     this.switchSide = this.switchSide.bind(this)
@@ -25,6 +27,7 @@ class dcMotor {
   }
 
   forward (speed) {
+    console.log('Running forward')
     if (!this.motor()) {
       return
     }
@@ -46,16 +49,10 @@ class dcMotor {
   }
 
   switchSide () {
-    this._motor.isOn = false
-    const { dir, cdir, pwm } = this.motorPins
-    const newPins = {
-      dir: cdir,
-      cdir: dir,
-      pwm
-    }
+    this.invertPWM = !this.invertPWM
     const newMotor = new five.Motor({
-      pins: newPins,
-      invertPWM: this.settings.invertPWM
+      pins: this.motorPins,
+      invertPWM: this.invertPWM
     })
     this._motor = newMotor
   }
