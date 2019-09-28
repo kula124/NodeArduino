@@ -4,6 +4,7 @@ const controller = require('./controller')
 let calledFlag = false
 const motorAction = require('./constants/motor')
 const servoActon = require('./constants/servo')
+let resetCallback
 
 hooker.on('keydown', function ({ keycode }) {
   switch (keycode) {
@@ -17,7 +18,7 @@ hooker.on('keydown', function ({ keycode }) {
     case keys.DOWN:
       if (!calledFlag) {
         calledFlag = true
-        controller.act(motorAction.FORWARD, process.env.DC_SPEED)
+        controller.act(motorAction.REVERSE, process.env.DC_SPEED)
       }
       break
 
@@ -28,6 +29,11 @@ hooker.on('keydown', function ({ keycode }) {
     case keys.RIGHT:
       controller.act(servoActon.RIGHT, process.env.STEER_ANGLE)
       break
+    case keys.SPACE:
+      resetCallback()
+      break
+    default:
+      console.log('New key: ' + keycode)
   }
 })
 
@@ -47,4 +53,8 @@ hooker.on('keyup', function ({ keycode }) {
 
 hooker.start()
 
-module.exports = hooker
+module.exports = (settings) => {
+  resetCallback = settings.reset
+  console.log(resetCallback)
+  return hooker
+}
