@@ -14,14 +14,12 @@ const motor = new DcMotor({
 
 const servo = new five.Servo({
   pin: process.env.SERVO_PIN,
-  startAt: 92,
+  startAt: process.env.SERVO_BALANCE_ANGLE,
   range: [0, 180],
   center: true
 })
 
 function act (type, data) {
-  console.log('In controller: ')
-  console.log(type, data)
   switch (type) {
     case motorAction.FORWARD:
       motor.forward(data)

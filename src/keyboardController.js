@@ -55,6 +55,5 @@ hooker.start()
 
 module.exports = (settings) => {
   resetCallback = settings.reset
-  console.log(resetCallback)
   return hooker
 }
